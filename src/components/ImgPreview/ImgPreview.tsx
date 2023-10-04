@@ -1,9 +1,7 @@
-import React from "react";
-
 const ImgPreview = () => {
   return (
     <div>
-      <img></img>
+      <img src="https://picsum.photos/200"></img>
     </div>
   );
 };

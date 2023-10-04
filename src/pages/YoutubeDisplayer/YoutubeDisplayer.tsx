@@ -1,17 +1,25 @@
-import React from "react";
 import ImgPreview from "../../components/ImgPreview/ImgPreview";
+import "./YoutubeDisplayer.css";
 
 const YoutubeDisplayer = () => {
   return (
-    <div>
-      <div>
+    <div className="container">
+      <div className="form-container">
         <form>
-          <h1>Añadir nuevo video</h1>
-          <input type="text"></input>
-          <input type="submit"></input>
+          <div className="titulo">
+            <h1>Añadir nuevo video</h1>
+          </div>
+          <div className="text">
+            <div className="input">
+              <input type="text" placeholder="Añadir"></input>
+            </div>
+            <div className="submit">Añadir</div>
+          </div>
         </form>
       </div>
-      <ImgPreview />
+      <div className="img-container">
+        <ImgPreview />
+      </div>
     </div>
   );
 };
