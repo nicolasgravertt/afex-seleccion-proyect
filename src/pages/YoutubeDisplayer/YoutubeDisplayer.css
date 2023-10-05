@@ -44,3 +44,25 @@
   cursor: pointer;
   border-radius: 0px 12px 12px 0px;
 }
+
+.form-container {
+  height: 20%;
+}
+
+.img-container {
+  padding: 20px 10%;
+  height: 80%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-padding: 1rem;
+}
+
+.img-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+}
+
+.img-grid-item {
+  width: 100%;
+}

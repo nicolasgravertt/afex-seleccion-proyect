@@ -1,9 +1,7 @@
+import "./ImgPreview.css";
+
 const ImgPreview = () => {
-  return (
-    <div>
-      <img src="https://picsum.photos/200"></img>
-    </div>
-  );
+  return <img src="https://picsum.photos/300/300"></img>;
 };
 
 export default ImgPreview;

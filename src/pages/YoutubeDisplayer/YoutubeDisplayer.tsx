@@ -18,7 +18,56 @@ const YoutubeDisplayer = () => {
         </form>
       </div>
       <div className="img-container">
-        <ImgPreview />
+        <div className="img-grid">
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+          <div className="img-grid-item">
+            <ImgPreview />
+          </div>
+        </div>
       </div>
     </div>
   );
