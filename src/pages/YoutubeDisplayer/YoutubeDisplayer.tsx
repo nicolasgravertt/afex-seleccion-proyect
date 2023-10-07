@@ -22,22 +22,39 @@ const YoutubeDisplayer: React.FC = () => {
         .required("URL is required "),
     }),
     onSubmit: (values) => {
-      // Handle form submission here
       const { youtubeId, isValidated } = validateUrl(values.youtubeUrl);
       if (isValidated) onSaveYoutubeVideoClicked(youtubeId);
     },
   });
 
+  const initialData = {
+    _id: "",
+    title: "",
+    description: "",
+    thumbnail: "",
+    videoUrl: "",
+  };
+
   const [youtubeVideoData, setyoutubeVideoData] = useState<Youtubevideo[]>([]);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isVideoDeleteModalOpen, setIsVideoDeleteModalOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<Youtubevideo>(initialData);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
+  const openVideoDeleteModal = () => {
+    setIsVideoDeleteModalOpen(true);
+  };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeVideoDeleteModal = () => {
+    setIsVideoDeleteModalOpen(false);
+  };
+
+  const openVideoModal = () => {
+    setIsVideoModalOpen(true);
+  };
+
+  const closeVideoModal = () => {
+    setIsVideoModalOpen(false);
   };
 
   const onSaveYoutubeVideoClicked = async (youtubeId: string) => {
@@ -54,15 +71,51 @@ const YoutubeDisplayer: React.FC = () => {
     }
   };
 
+  const onDeleteYoutubeVideo = async (youtubeId: string) => {
+    try {
+      const response = await youtubeVideoApi.remove(youtubeId);
+      if (response.data) {
+        const filteredArray = youtubeVideoData.filter(
+          (youtubeVideo) => youtubeVideo._id !== youtubeId
+        );
+        setyoutubeVideoData([...filteredArray]);
+        closeVideoDeleteModal();
+      }
+    } catch (error) {
+      // setError("Error al obtener datos del servidor");
+      // setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOpenPreviewVideoModal = (id: string) => {
+    const selectedVideo = youtubeVideoData.filter(
+      (youtubeVideo) => youtubeVideo._id === id
+    );
+    const url = new URL(selectedVideo[0].videoUrl);
+    const youtubeId = url.searchParams.get("v") || "";
+    setSelectedVideo({
+      ...selectedVideo[0],
+      videoUrl: `https://www.youtube.com/embed/${youtubeId}?autoplay=1&loop=1`,
+    });
+    openVideoModal();
+  };
+
+  const handleDeleteConfirmation = (result: boolean) => {
+    if (result === true) {
+      onDeleteYoutubeVideo(selectedVideo._id);
+    } else {
+      closeVideoDeleteModal();
+    }
+  };
+
   const validateUrl = (youtubeUrl: string) => {
     const url = new URL(youtubeUrl);
-
-    // Access parts of the URL
-    const host = url.host.trim().toLowerCase(); // "example.com"
-    const youtubeId = url.searchParams.get("v"); // URLSearchParams object
+    const host = url.host.trim().toLowerCase(); // "www.youtube.com"
+    const youtubeId = url.searchParams.get("v"); // URLSearchParams
     if (host !== "www.youtube.com" || youtubeId === null)
       return { youtubeId: "", isValidated: false };
-
     return {
       youtubeId,
       isValidated: true,
@@ -126,16 +179,23 @@ const YoutubeDisplayer: React.FC = () => {
                   id={youtubeVideo._id}
                   title={youtubeVideo.title}
                   thumbnail={youtubeVideo.thumbnail}
+                  openVideoDeleteModal={openVideoDeleteModal}
+                  handleOpenPreviewVideoModal={handleOpenPreviewVideoModal}
+                  setSelectedVideo={setSelectedVideo}
                 />
               ))}
             </div>
           </div>
-          <ImgPreviewModal isOpen={isModalOpen} onClose={closeModal}>
-            <h1>Datos Video</h1>
-          </ImgPreviewModal>
-          <ImgPreviewDelete isOpen={isModalOpen} onClose={closeModal}>
-            <h1>Datos Video</h1>
-          </ImgPreviewDelete>
+          <ImgPreviewModal
+            isOpen={isVideoModalOpen}
+            onClose={closeVideoModal}
+            selectedVideo={selectedVideo}
+          />
+          <ImgPreviewDelete
+            isOpen={isVideoDeleteModalOpen}
+            onClose={closeVideoDeleteModal}
+            handleDelete={handleDeleteConfirmation}
+          />
         </div>
       )}
     </>

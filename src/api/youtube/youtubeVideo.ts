@@ -8,7 +8,7 @@ const create = (youtubeId: string) => {
   return axiosInstance.api.post("/youtube", { youtubeId });
 };
 
-const remove = (id: number) => {
+const remove = (id: string) => {
   return axiosInstance.api.delete(`/youtube/${id}`);
 };
 
