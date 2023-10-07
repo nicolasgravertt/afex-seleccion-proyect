@@ -4,3 +4,7 @@ img {
   max-width: 100%;
   display: block;
 }
+
+.img-grid-item {
+  width: 100%;
+}
