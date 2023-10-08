@@ -6,6 +6,7 @@ interface ImgPreviewProps {
   id: string;
   title: string;
   thumbnail: string;
+  videoDuration: string;
   setSelectedVideo: (youtubeData: Youtubevideo) => void;
   openVideoDeleteModal: () => void;
   handleOpenPreviewVideoModal: (id: string) => void;
@@ -15,6 +16,7 @@ const ImgPreview: React.FC<ImgPreviewProps> = ({
   id,
   title,
   thumbnail,
+  videoDuration,
   setSelectedVideo,
   openVideoDeleteModal,
   handleOpenPreviewVideoModal,
@@ -25,6 +27,7 @@ const ImgPreview: React.FC<ImgPreviewProps> = ({
     description: "",
     thumbnail: "",
     videoUrl: "",
+    videoDuration: "",
   };
 
   const handleDeleteModal = () => {
@@ -46,6 +49,7 @@ const ImgPreview: React.FC<ImgPreviewProps> = ({
         src={thumbnail}
         alt={title}
       ></img>
+      <p className="img-grid-item-video-duration">{videoDuration}</p>
     </div>
   );
 };

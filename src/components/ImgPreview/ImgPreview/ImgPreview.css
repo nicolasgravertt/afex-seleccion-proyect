@@ -21,6 +21,19 @@ img {
   width: 30px;
 }
 
+.img-grid-item-video-duration {
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 3px;
+  margin: 0px 5px 5px 0px;
+  width: auto;
+}
+
 .img-grid-item-icon {
   font-size: 30px;
   font-weight: 1000;

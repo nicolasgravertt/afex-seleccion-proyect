@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 import { useFormik } from "formik";
+import { useSnackbar } from "notistack";
 import * as yup from "yup";
 import {
   ImgPreview,
@@ -11,6 +13,7 @@ import { Youtubevideo } from "../../models/youtubeVideo";
 import "./YoutubeDisplayer.css";
 
 const YoutubeDisplayer: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const formik = useFormik({
     initialValues: {
       youtubeUrl: "",
@@ -33,6 +36,7 @@ const YoutubeDisplayer: React.FC = () => {
     description: "",
     thumbnail: "",
     videoUrl: "",
+    videoDuration: "",
   };
 
   const [youtubeVideoData, setyoutubeVideoData] = useState<Youtubevideo[]>([]);
@@ -57,15 +61,32 @@ const YoutubeDisplayer: React.FC = () => {
     setIsVideoModalOpen(false);
   };
 
-  const onSaveYoutubeVideoClicked = async (youtubeId: string) => {
+  const onSaveYoutubeVideoClicked = async (youtubeId: string | null) => {
     setIsLoading(true);
     try {
       const response = await youtubeVideoApi.create(youtubeId);
       const data = response.data;
       setyoutubeVideoData([...youtubeVideoData, data]);
-    } catch (error) {
-      // setError("Error al obtener datos del servidor");
-      // setIsLoading(false);
+      enqueueSnackbar("Video Agregado Correctamente", { variant: "success" });
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          enqueueSnackbar(`Error: ${error.response.data}`, {
+            variant: "error",
+          });
+        } else if (error.request) {
+          enqueueSnackbar(
+            `No se recibio respuesta. Peticion: ${error.request}`,
+            {
+              variant: "error",
+            }
+          );
+        } else {
+          enqueueSnackbar(`Error al crear la peticion: ${error.message}`, {
+            variant: "error",
+          });
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -80,10 +101,29 @@ const YoutubeDisplayer: React.FC = () => {
         );
         setyoutubeVideoData([...filteredArray]);
         closeVideoDeleteModal();
+        enqueueSnackbar("Video Eliminado Correctamente", {
+          variant: "success",
+        });
       }
-    } catch (error) {
-      // setError("Error al obtener datos del servidor");
-      // setIsLoading(false);
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          enqueueSnackbar(`Error: ${error.response.data}`, {
+            variant: "error",
+          });
+        } else if (error.request) {
+          enqueueSnackbar(
+            `No se recibio respuesta. Peticion: ${error.request}`,
+            {
+              variant: "error",
+            }
+          );
+        } else {
+          enqueueSnackbar(`Error al crear la peticion: ${error.message}`, {
+            variant: "error",
+          });
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -111,11 +151,19 @@ const YoutubeDisplayer: React.FC = () => {
   };
 
   const validateUrl = (youtubeUrl: string) => {
+    if (!youtubeUrl) return { youtubeId: "", isValidated: false };
+
+    let youtubeId: string | null = "";
     const url = new URL(youtubeUrl);
-    const host = url.host.trim().toLowerCase(); // "www.youtube.com"
-    const youtubeId = url.searchParams.get("v"); // URLSearchParams
-    if (host !== "www.youtube.com" || youtubeId === null)
-      return { youtubeId: "", isValidated: false };
+
+    if (url.host.trim().toLowerCase() === "youtu.be") {
+      youtubeId = url.pathname.slice(1);
+    }
+
+    if (url.host.trim().toLowerCase() === "www.youtube.com") {
+      youtubeId = url.searchParams.get("v"); // URLSearchParams
+    }
+
     return {
       youtubeId,
       isValidated: true,
@@ -179,6 +227,7 @@ const YoutubeDisplayer: React.FC = () => {
                   id={youtubeVideo._id}
                   title={youtubeVideo.title}
                   thumbnail={youtubeVideo.thumbnail}
+                  videoDuration={youtubeVideo.videoDuration}
                   openVideoDeleteModal={openVideoDeleteModal}
                   handleOpenPreviewVideoModal={handleOpenPreviewVideoModal}
                   setSelectedVideo={setSelectedVideo}
@@ -203,3 +252,8 @@ const YoutubeDisplayer: React.FC = () => {
 };
 
 export default YoutubeDisplayer;
+
+// Custom type guard to check if error is an AxiosError
+function isAxiosError(error: unknown): error is AxiosError {
+  return (error as AxiosError).isAxiosError === true;
+}

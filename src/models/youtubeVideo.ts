@@ -4,4 +4,5 @@ export interface Youtubevideo {
   description: string;
   thumbnail: string;
   videoUrl: string;
+  videoDuration: string;
 }

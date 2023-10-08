@@ -4,7 +4,7 @@ const get = () => {
   return axiosInstance.api.get("/youtube");
 };
 
-const create = (youtubeId: string) => {
+const create = (youtubeId: string | null) => {
   return axiosInstance.api.post("/youtube", { youtubeId });
 };
 
