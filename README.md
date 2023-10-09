@@ -10,6 +10,10 @@ Este sistema fue creado en base a una prueba tecnica para la empresa AFEX, el cu
 
 ## Imagenes de ejemplo.
 
+![Alt Text](https://github.com/nicolasgravertt/afex-seleccion-proyect/blob/main/src/assets/index.png?raw=true)
+
+![Alt Text](https://github.com/nicolasgravertt/afex-seleccion-proyect/blob/main/src/assets/modal.png?raw=true)
+
 ## Instrucciones de instalacion y ejecucion del proyecto.
 
 1.- Clonar el proyecto.
