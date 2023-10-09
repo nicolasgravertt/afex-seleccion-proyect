@@ -30,13 +30,11 @@ const ImgPreviewModal: FC<ModalProps> = ({
               allow="autoplay"
             ></iframe>
           </div>
-          <div className="preview-youtube-data">
-            <div className="preview-youtube-data-title">
-              <h4>{selectedVideo.title}</h4>
-            </div>
-            <div className="preview-youtube-data-description">
-              <p>{selectedVideo.description}</p>
-            </div>
+          <div className="preview-youtube-data-title">
+            <h4>{selectedVideo.title}</h4>
+          </div>
+          <div className="preview-youtube-data-description">
+            <p>{selectedVideo.description}</p>
           </div>
         </div>
         <button className="preview-modal-close-button" onClick={onClose}>

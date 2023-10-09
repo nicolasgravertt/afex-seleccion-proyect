@@ -15,15 +15,22 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --fs-xl: clamp(1.5rem, 2vw + 1rem, 12rem);
+  --fs-600: clamp(0.6rem, 1vw + 0.2rem, 12rem);
+  --fs-400: clamp(0.6rem, 1vw + 0.2rem, 12rem);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+@media (min-width: 320px) {
+  /* CSS styles for small smartphones */
 }
-a:hover {
-  color: #535bf2;
+
+@media (min-width: 768px) {
+  /* CSS styles for tablets */
+}
+
+@media (min-width: 1024px) {
+  /* CSS styles for desktop screens */
 }
 
 body {
@@ -34,8 +41,18 @@ body {
   min-height: 100vh;
 }
 
+h4 {
+  font-size: var(--fs-600);
+  margin: 10px 0px 0px 0px;
+}
+
+p {
+  font-size: var(--fs-400);
+  margin: 0;
+}
+
 h1 {
-  font-size: 3.2em;
+  font-size: var(--fs-xl);
   line-height: 1.1;
 }
 
@@ -50,9 +67,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
