@@ -214,7 +214,7 @@ const YoutubeDisplayer: React.FC = () => {
                   </button>
                 </div>
                 {formik.touched.youtubeUrl && formik.errors.youtubeUrl && (
-                  <div className="error">{formik.errors.youtubeUrl}</div>
+                  <div className="formik-error">{formik.errors.youtubeUrl}</div>
                 )}
               </form>
             </div>

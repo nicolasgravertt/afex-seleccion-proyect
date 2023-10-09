@@ -1,27 +1,22 @@
-# React + TypeScript + Vite
+# Frontend - Administrador de videos de youtube.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Sistema capaz de ingresar url y previsualizar videos desde la plataforma de youtube.
 
-Currently, two official plugins are available:
+Este sistema fue creado en base a una prueba tecnica para la empresa AFEX, el cual es capaz de las siguientes caracteristicas:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Ingresar una URL de youtube para agregarlo a una lista personalizada de videos.
+- Seleccionar uno de los videos de la lista para previsualizar su contenido.
+- La previsualizacion cuenta con la capacidad de reproducir, ver el titulo y descripcion del video.
 
-## Expanding the ESLint configuration
+## Imagenes de ejemplo.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Instrucciones de instalacion y ejecucion del proyecto.
 
-- Configure the top-level `parserOptions` property like this:
+1.- Clonar el proyecto.
+2.- Instalar dependencias ejecutando en la consola el comando npm install.
+3.- Ejecutar el Backend que se encuentra en el siguiente enlace: https://github.com/nicolasgravertt/afex-seleccion-proyect-back
+4.- Ejecutar el proyecto con npm run dev en la consola.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Disponible para usarse y modificarse
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Al ser un proyecto sin fines de lucro, sientanse libres de utilizarlo y modificarlo tanto como gusten.

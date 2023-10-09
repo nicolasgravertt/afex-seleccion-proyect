@@ -93,3 +93,7 @@ h1 {
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 }
+
+.formik-error {
+  color: red;
+}
