@@ -16,10 +16,10 @@ Este sistema fue creado en base a una prueba tecnica para la empresa AFEX, el cu
 
 ## Instrucciones de instalacion y ejecucion del proyecto.
 
-1.- Clonar el proyecto.
-2.- Instalar dependencias ejecutando en la consola el comando npm install.
-3.- Ejecutar el Backend que se encuentra en el siguiente enlace: https://github.com/nicolasgravertt/afex-seleccion-proyect-back
-4.- Ejecutar el proyecto con npm run dev en la consola.
+- Clonar el proyecto.
+- Instalar dependencias ejecutando en la consola el comando npm install.
+- Ejecutar el Backend que se encuentra en el siguiente enlace: https://github.com/nicolasgravertt/afex-seleccion-proyect-back
+- Ejecutar el proyecto con npm run dev en la consola.
 
 ## Disponible para usarse y modificarse
 
