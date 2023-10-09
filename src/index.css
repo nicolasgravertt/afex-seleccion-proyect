@@ -53,6 +53,7 @@ p {
 
 h1 {
   font-size: var(--fs-xl);
+  margin: 0px 0px 10px 0px;
   line-height: 1.1;
 }
 

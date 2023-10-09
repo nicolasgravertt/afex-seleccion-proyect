@@ -36,7 +36,6 @@ h1 {
 
 .text {
   display: flex;
-  height: 80px;
 }
 
 .input {
@@ -83,7 +82,7 @@ h1 {
 /* IMG CONTAINER */
 
 .img-container {
-  padding: 20px 10%;
+  padding: 20px;
   height: 100%;
   overflow-y: auto;
 }
