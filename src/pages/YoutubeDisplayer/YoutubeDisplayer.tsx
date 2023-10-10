@@ -23,9 +23,10 @@ const YoutubeDisplayer: React.FC = () => {
         .url("Must be a valid URL, Example (https://youtube.com)")
         .required("URL is required "),
     }),
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       const { youtubeId, isValidated } = validateUrl(values.youtubeUrl);
       if (isValidated) onSaveYoutubeVideoClicked(youtubeId);
+      resetForm();
     },
   });
 
@@ -40,7 +41,7 @@ const YoutubeDisplayer: React.FC = () => {
       setYoutubeVideos([...youtubeVideos, data]);
       enqueueSnackbar("Video Agregado Correctamente", { variant: "success" });
     } catch (error) {
-      enqueueSnackbar(`Error: ${error}`, {
+      enqueueSnackbar(`${error}`, {
         variant: "error",
       });
     } finally {
@@ -58,7 +59,7 @@ const YoutubeDisplayer: React.FC = () => {
         variant: "success",
       });
     } catch (error) {
-      enqueueSnackbar(`Error: ${error}`, {
+      enqueueSnackbar(`${error}`, {
         variant: "error",
       });
     } finally {
@@ -78,8 +79,8 @@ const YoutubeDisplayer: React.FC = () => {
 
   useEffect(() => {
     if (refetchFlag) {
-      fetchYoutubeVideoData(); // Trigger refetch when refetchFlag changes
-      setRefetchFlag(false); // Reset the flag after refetch
+      fetchYoutubeVideoData();
+      setRefetchFlag(false);
     }
   }, [refetchFlag, fetchYoutubeVideoData]);
 
@@ -94,7 +95,7 @@ const YoutubeDisplayer: React.FC = () => {
     }
 
     if (url.host.trim().toLowerCase() === "www.youtube.com") {
-      youtubeId = url.searchParams.get("v"); // URLSearchParams
+      youtubeId = url.searchParams.get("v");
     }
 
     return {

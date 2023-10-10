@@ -9,10 +9,10 @@ export const getYoutubeVideos = async (): Promise<Youtubevideo[]> => {
   } catch (error) {
     if (isAxiosError(error)) {
       // This is an Axios-specific error
-      throw new Error(`Axios error:", ${error.message}`);
+      throw new Error(`${error.response?.data}`);
     }
     // Handle or rethrow other errors
-    throw new Error(`Axios error:", ${error}`);
+    throw new Error(`${error}`);
   }
 };
 
@@ -24,10 +24,10 @@ export const saveYoutubeVideo = async (youtubeId: string | null) => {
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       // This is an Axios-specific error
-      throw new Error(`Axios error:", ${error.message}`);
+      throw new Error(`${error.response?.data}`);
     }
     // Handle or rethrow other errors
-    throw new Error(`Axios error:", ${error}`);
+    throw new Error(`${error}`);
   }
 };
 
@@ -38,10 +38,10 @@ export const deleteYoutubeVideo = async (youtubeId: string) => {
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       // This is an Axios-specific error
-      throw new Error(`Axios error:", ${error.message}`);
+      throw new Error(`${error.response?.data}`);
     }
     // Handle or rethrow other errors
-    throw new Error(`Axios error:", ${error}`);
+    throw new Error(`${error}`);
   }
 };
 
