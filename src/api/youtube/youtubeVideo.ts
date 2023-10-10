@@ -1,5 +1,4 @@
 import axiosInstance from "../axios/axios";
-
 const get = () => {
   return axiosInstance.api.get("/youtube");
 };

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { AxiosError } from "axios";
+import React, { useState, useEffect, useCallback } from "react";
+import { Youtubevideo } from "../../models/youtubeVideo";
 import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
-import * as yup from "yup";
+import { ImgPreview } from "../../components/ImgPreview";
 import {
-  ImgPreview,
-  ImgPreviewModal,
-  ImgPreviewDelete,
-} from "../../components/ImgPreview";
-import youtubeVideoApi from "../../api/youtube/youtubeVideo";
-import { Youtubevideo } from "../../models/youtubeVideo";
+  getYoutubeVideos,
+  saveYoutubeVideo,
+  deleteYoutubeVideo,
+} from "../../services/youtubeVideos";
+import * as yup from "yup";
 import "./YoutubeDisplayer.css";
 
 const YoutubeDisplayer: React.FC = () => {
@@ -30,125 +29,59 @@ const YoutubeDisplayer: React.FC = () => {
     },
   });
 
-  const initialData = {
-    _id: "",
-    title: "",
-    description: "",
-    thumbnail: "",
-    videoUrl: "",
-    videoDuration: "",
-  };
-
-  const [youtubeVideoData, setyoutubeVideoData] = useState<Youtubevideo[]>([]);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [isVideoDeleteModalOpen, setIsVideoDeleteModalOpen] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState<Youtubevideo>(initialData);
   const [isLoading, setIsLoading] = useState(false);
-
-  const openVideoDeleteModal = () => {
-    setIsVideoDeleteModalOpen(true);
-  };
-
-  const closeVideoDeleteModal = () => {
-    setIsVideoDeleteModalOpen(false);
-  };
-
-  const openVideoModal = () => {
-    setIsVideoModalOpen(true);
-  };
-
-  const closeVideoModal = () => {
-    setIsVideoModalOpen(false);
-  };
+  const [youtubeVideos, setYoutubeVideos] = useState<Youtubevideo[]>([]);
+  const [refetchFlag, setRefetchFlag] = useState(false);
 
   const onSaveYoutubeVideoClicked = async (youtubeId: string | null) => {
     setIsLoading(true);
     try {
-      const response = await youtubeVideoApi.create(youtubeId);
-      const data = response.data;
-      setyoutubeVideoData([...youtubeVideoData, data]);
+      const data = await saveYoutubeVideo(youtubeId);
+      setYoutubeVideos([...youtubeVideos, data]);
       enqueueSnackbar("Video Agregado Correctamente", { variant: "success" });
-    } catch (error: unknown) {
-      if (isAxiosError(error)) {
-        if (error.response) {
-          enqueueSnackbar(`Error: ${error.response.data}`, {
-            variant: "error",
-          });
-        } else if (error.request) {
-          enqueueSnackbar(
-            `No se recibio respuesta. Peticion: ${error.request}`,
-            {
-              variant: "error",
-            }
-          );
-        } else {
-          enqueueSnackbar(`Error al crear la peticion: ${error.message}`, {
-            variant: "error",
-          });
-        }
-      }
+    } catch (error) {
+      enqueueSnackbar(`Error: ${error}`, {
+        variant: "error",
+      });
     } finally {
       setIsLoading(false);
+      setRefetchFlag(true);
     }
   };
 
-  const onDeleteYoutubeVideo = async (youtubeId: string) => {
+  const onDeleteYoutubeVideo = async (id: string) => {
+    setIsLoading(true);
     try {
-      const response = await youtubeVideoApi.remove(youtubeId);
-      if (response.data) {
-        const filteredArray = youtubeVideoData.filter(
-          (youtubeVideo) => youtubeVideo._id !== youtubeId
-        );
-        setyoutubeVideoData([...filteredArray]);
-        closeVideoDeleteModal();
-        enqueueSnackbar("Video Eliminado Correctamente", {
-          variant: "success",
-        });
-      }
-    } catch (error: unknown) {
-      if (isAxiosError(error)) {
-        if (error.response) {
-          enqueueSnackbar(`Error: ${error.response.data}`, {
-            variant: "error",
-          });
-        } else if (error.request) {
-          enqueueSnackbar(
-            `No se recibio respuesta. Peticion: ${error.request}`,
-            {
-              variant: "error",
-            }
-          );
-        } else {
-          enqueueSnackbar(`Error al crear la peticion: ${error.message}`, {
-            variant: "error",
-          });
-        }
-      }
+      deleteYoutubeVideo(id);
+      setYoutubeVideos([...youtubeVideos]);
+      enqueueSnackbar("Video Eliminado Correctamente", {
+        variant: "success",
+      });
+    } catch (error) {
+      enqueueSnackbar(`Error: ${error}`, {
+        variant: "error",
+      });
     } finally {
       setIsLoading(false);
+      setRefetchFlag(true);
     }
   };
 
-  const handleOpenPreviewVideoModal = (id: string) => {
-    const selectedVideo = youtubeVideoData.filter(
-      (youtubeVideo) => youtubeVideo._id === id
-    );
-    const url = new URL(selectedVideo[0].videoUrl);
-    const youtubeId = url.searchParams.get("v") || "";
-    setSelectedVideo({
-      ...selectedVideo[0],
-      videoUrl: `https://www.youtube.com/embed/${youtubeId}?autoplay=1&loop=1`,
-    });
-    openVideoModal();
-  };
+  const fetchYoutubeVideoData = useCallback(async () => {
+    const data = await getYoutubeVideos();
+    setYoutubeVideos(data);
+  }, []);
 
-  const handleDeleteConfirmation = (result: boolean) => {
-    if (result === true) {
-      onDeleteYoutubeVideo(selectedVideo._id);
-    } else {
-      closeVideoDeleteModal();
+  useEffect(() => {
+    fetchYoutubeVideoData();
+  }, [fetchYoutubeVideoData]);
+
+  useEffect(() => {
+    if (refetchFlag) {
+      fetchYoutubeVideoData(); // Trigger refetch when refetchFlag changes
+      setRefetchFlag(false); // Reset the flag after refetch
     }
-  };
+  }, [refetchFlag, fetchYoutubeVideoData]);
 
   const validateUrl = (youtubeUrl: string) => {
     if (!youtubeUrl) return { youtubeId: "", isValidated: false };
@@ -169,21 +102,6 @@ const YoutubeDisplayer: React.FC = () => {
       isValidated: true,
     };
   };
-
-  const fetchYoutubeVideoData = async () => {
-    try {
-      const response = await youtubeVideoApi.get();
-      const data = response.data;
-      setyoutubeVideoData(data);
-    } catch (err) {
-      // setError("Error al obtener datos del servidor");
-      // setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchYoutubeVideoData();
-  }, []);
 
   return (
     <>
@@ -221,30 +139,12 @@ const YoutubeDisplayer: React.FC = () => {
           </div>
           <div className="img-container">
             <div className="img-grid">
-              {youtubeVideoData.map((youtubeVideo: Youtubevideo) => (
-                <ImgPreview
-                  key={youtubeVideo._id}
-                  id={youtubeVideo._id}
-                  title={youtubeVideo.title}
-                  thumbnail={youtubeVideo.thumbnail}
-                  videoDuration={youtubeVideo.videoDuration}
-                  openVideoDeleteModal={openVideoDeleteModal}
-                  handleOpenPreviewVideoModal={handleOpenPreviewVideoModal}
-                  setSelectedVideo={setSelectedVideo}
-                />
-              ))}
+              <ImgPreview
+                youtubeVideos={youtubeVideos}
+                onDeleteYoutubeVideo={onDeleteYoutubeVideo}
+              />
             </div>
           </div>
-          <ImgPreviewModal
-            isOpen={isVideoModalOpen}
-            onClose={closeVideoModal}
-            selectedVideo={selectedVideo}
-          />
-          <ImgPreviewDelete
-            isOpen={isVideoDeleteModalOpen}
-            onClose={closeVideoDeleteModal}
-            handleDelete={handleDeleteConfirmation}
-          />
         </div>
       )}
     </>
@@ -252,8 +152,3 @@ const YoutubeDisplayer: React.FC = () => {
 };
 
 export default YoutubeDisplayer;
-
-// Custom type guard to check if error is an AxiosError
-function isAxiosError(error: unknown): error is AxiosError {
-  return (error as AxiosError).isAxiosError === true;
-}
