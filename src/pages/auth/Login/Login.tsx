@@ -61,7 +61,7 @@ const Login: React.FC = () => {
         <div className="login-container">
           <div className="login-grid-form">
             <div className="login-header">
-              <div className="login-text">Iniciar Sesión</div>
+              <div className="login-text">YTVideo Manager</div>
               <div className="login-underline"></div>
             </div>
             <form onSubmit={formik.handleSubmit}>

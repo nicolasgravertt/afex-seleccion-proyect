@@ -69,6 +69,21 @@ button {
   transition: border-color 0.25s;
 }
 
+/* Change the color of the link text */
+a {
+  color: #007bff; /* Blue color, you can use any color you prefer */
+}
+
+/* Remove the default underline on the link text */
+a {
+  text-decoration: none;
+}
+
+/* Add an underline on hover */
+a:hover {
+  text-decoration: underline;
+}
+
 button:hover {
   border-color: #646cff;
 }

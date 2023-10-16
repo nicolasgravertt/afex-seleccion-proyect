@@ -14,12 +14,15 @@ Este sistema fue creado en base a una prueba tecnica para la empresa AFEX, el cu
 
 ![Alt Text](https://github.com/nicolasgravertt/afex-seleccion-proyect/blob/main/src/assets/modal.png?raw=true)
 
+![Alt Text](https://github.com/nicolasgravertt/afex-seleccion-proyect/blob/main/src/assets/login.png?raw=true)
+
 ## Instrucciones de instalacion y ejecucion del proyecto.
 
 - Clonar el proyecto.
 - Instalar dependencias ejecutando en la consola el comando npm install.
 - Ejecutar el Backend que se encuentra en el siguiente enlace: https://github.com/nicolasgravertt/afex-seleccion-proyect-back
 - Ejecutar el proyecto con npm run dev en la consola.
+- Iniciar Sesion con Usuario: admin Contraseña: Hola
 
 ## Disponible para usarse y modificarse
 
