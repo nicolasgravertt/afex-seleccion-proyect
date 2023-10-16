@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Youtubevideo } from "../../models/youtubeVideo";
 import { useFormik } from "formik";
+import * as yup from "yup";
 import { useSnackbar } from "notistack";
 import { ImgPreview } from "../../components/ImgPreview";
 import {
@@ -8,10 +9,11 @@ import {
   saveYoutubeVideo,
   deleteYoutubeVideo,
 } from "../../services/youtubeVideos";
-import * as yup from "yup";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./YoutubeDisplayer.css";
 
 const YoutubeDisplayer: React.FC = () => {
+  const axiosPrivate = useAxiosPrivate();
   const { enqueueSnackbar } = useSnackbar();
   const formik = useFormik({
     initialValues: {
@@ -37,7 +39,7 @@ const YoutubeDisplayer: React.FC = () => {
   const onSaveYoutubeVideoClicked = async (youtubeId: string | null) => {
     setIsLoading(true);
     try {
-      const data = await saveYoutubeVideo(youtubeId);
+      const data = await saveYoutubeVideo(youtubeId, axiosPrivate);
       setYoutubeVideos([...youtubeVideos, data]);
       enqueueSnackbar("Video Agregado Correctamente", { variant: "success" });
     } catch (error) {
@@ -53,7 +55,7 @@ const YoutubeDisplayer: React.FC = () => {
   const onDeleteYoutubeVideo = async (id: string) => {
     setIsLoading(true);
     try {
-      deleteYoutubeVideo(id);
+      deleteYoutubeVideo(id, axiosPrivate);
       setYoutubeVideos([...youtubeVideos]);
       enqueueSnackbar("Video Eliminado Correctamente", {
         variant: "success",
@@ -69,9 +71,9 @@ const YoutubeDisplayer: React.FC = () => {
   };
 
   const fetchYoutubeVideoData = useCallback(async () => {
-    const data = await getYoutubeVideos();
+    const data = await getYoutubeVideos(axiosPrivate);
     setYoutubeVideos(data);
-  }, []);
+  }, [axiosPrivate]);
 
   useEffect(() => {
     fetchYoutubeVideoData();

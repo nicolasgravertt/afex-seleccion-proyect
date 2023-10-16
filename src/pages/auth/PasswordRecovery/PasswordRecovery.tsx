@@ -5,21 +5,21 @@ import "./PasswordRecovery.css";
 const Login: React.FC = () => {
   return (
     <>
-      <div className="container">
-        <div className="grid-form">
-          <div className="header">
-            <div className="text">Recuperar Contraseña</div>
-            <div className="underline"></div>
+      <div className="pwd-recovery-container">
+        <div className="pwd-recovery-grid-form">
+          <div className="pwd-recovery-header">
+            <div className="pwd-recovery-text">Recuperar Contraseña</div>
+            <div className="pwd-recovery-underline"></div>
           </div>
-          <div className="inputs">
-            <div className="input-container">
-              <div className="input">
+          <div className="pwd-recovery-inputs">
+            <div className="pwd-recovery-input-container">
+              <div className="pwd-recovery-input">
                 <img src={Email} alt=""></img>
                 <input type="email" placeholder="Email"></input>
               </div>
             </div>
-            <div className="submit-container">
-              <div className="submit">Recuperar Contraseña</div>
+            <div className="pwd-recovery-submit-container">
+              <div className="pwd-recovery-submit">Recuperar Contraseña</div>
             </div>
           </div>
         </div>

@@ -1,10 +1,12 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosInstance } from "axios";
 import { Youtubevideo } from "../models/youtubeVideo";
-import youtubeVideoApi from "../api/youtube/youtubeVideo";
+// import youtubeVideoApi from "../api/youtube/youtubeVideo";
 
-export const getYoutubeVideos = async (): Promise<Youtubevideo[]> => {
+export const getYoutubeVideos = async (
+  axiosPrivate: AxiosInstance
+): Promise<Youtubevideo[]> => {
   try {
-    const response = await youtubeVideoApi.get();
+    const response = await axiosPrivate.get("/youtube");
     return response.data as Youtubevideo[];
   } catch (error) {
     if (isAxiosError(error)) {
@@ -16,9 +18,12 @@ export const getYoutubeVideos = async (): Promise<Youtubevideo[]> => {
   }
 };
 
-export const saveYoutubeVideo = async (youtubeId: string | null) => {
+export const saveYoutubeVideo = async (
+  youtubeId: string | null,
+  axiosPrivate: AxiosInstance
+) => {
   try {
-    const response = await youtubeVideoApi.create(youtubeId);
+    const response = await axiosPrivate.post("/youtube", { youtubeId });
     const data = response.data;
     return data;
   } catch (error: unknown) {
@@ -31,9 +36,12 @@ export const saveYoutubeVideo = async (youtubeId: string | null) => {
   }
 };
 
-export const deleteYoutubeVideo = async (youtubeId: string) => {
+export const deleteYoutubeVideo = async (
+  youtubeId: string,
+  axiosPrivate: AxiosInstance
+) => {
   try {
-    const response = await youtubeVideoApi.remove(youtubeId);
+    const response = await axiosPrivate.delete(`/youtube/${youtubeId}`);
     return response;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
