@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { Youtubevideo } from "../../../models/youtubeVideo";
 import {} from "../../../services/youtubeVideos";
 import { ImgPreviewModal, ImgPreviewDelete } from "../../ImgPreview";
@@ -74,37 +74,43 @@ const ImgPreview: React.FC<ImgPreviewProps> = ({
 
   return (
     <>
-      {youtubeVideos.map((youtubeVideo: Youtubevideo) => (
-        <div key={youtubeVideo._id} className="img-grid-item">
-          <button
-            onClick={() => handleDeleteModal(youtubeVideo._id)}
-            className="img-grid-item-close-button"
-          >
-            <span className="img-grid-item-icon">&times;</span>
-          </button>
-          <img
-            onClick={() => handleOpenPreviewVideoModal(youtubeVideo._id)}
-            id={youtubeVideo._id}
-            src={youtubeVideo.thumbnail}
-            alt={youtubeVideo.title}
-          ></img>
-          <p className="img-grid-item-video-duration">
-            {youtubeVideo.videoDuration}
-          </p>
+      <div className="img-container">
+        <div className="img-grid">
+          {youtubeVideos.map((youtubeVideo: Youtubevideo) => (
+            <div key={youtubeVideo._id} className="img-grid-item">
+              <button
+                onClick={() => handleDeleteModal(youtubeVideo._id)}
+                className="img-grid-item-close-button"
+              >
+                <span className="img-grid-item-icon">&times;</span>
+              </button>
+              <img
+                onClick={() => handleOpenPreviewVideoModal(youtubeVideo._id)}
+                id={youtubeVideo._id}
+                src={youtubeVideo.thumbnail}
+                alt={youtubeVideo.title}
+              ></img>
+              <p className="img-grid-item-video-duration">
+                {youtubeVideo.videoDuration}
+              </p>
+            </div>
+          ))}
+          <ImgPreviewModal
+            isOpen={isVideoModalOpen}
+            onClose={closeVideoModal}
+            selectedVideo={selectedVideo}
+          />
+          <ImgPreviewDelete
+            isOpen={isVideoDeleteModalOpen}
+            onClose={closeVideoDeleteModal}
+            handleDelete={handleDeleteConfirmation}
+          />
         </div>
-      ))}
-      <ImgPreviewModal
-        isOpen={isVideoModalOpen}
-        onClose={closeVideoModal}
-        selectedVideo={selectedVideo}
-      />
-      <ImgPreviewDelete
-        isOpen={isVideoDeleteModalOpen}
-        onClose={closeVideoDeleteModal}
-        handleDelete={handleDeleteConfirmation}
-      />
+      </div>
     </>
   );
 };
 
-export default ImgPreview;
+const MemoizedImgPreview = memo(ImgPreview);
+
+export default MemoizedImgPreview;

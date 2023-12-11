@@ -3,7 +3,7 @@ import { Youtubevideo } from "../../models/youtubeVideo";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useSnackbar } from "notistack";
-import { ImgPreview } from "../../components/ImgPreview";
+import { MemoizedImgPreview } from "../../components/ImgPreview";
 import {
   getYoutubeVideos,
   saveYoutubeVideo,
@@ -32,8 +32,8 @@ const YoutubeDisplayer: React.FC = () => {
     },
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const [youtubeVideos, setYoutubeVideos] = useState<Youtubevideo[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [refetchFlag, setRefetchFlag] = useState(false);
 
   const onSaveYoutubeVideoClicked = async (youtubeId: string | null) => {
@@ -140,14 +140,10 @@ const YoutubeDisplayer: React.FC = () => {
               </form>
             </div>
           </div>
-          <div className="img-container">
-            <div className="img-grid">
-              <ImgPreview
-                youtubeVideos={youtubeVideos}
-                onDeleteYoutubeVideo={onDeleteYoutubeVideo}
-              />
-            </div>
-          </div>
+          <MemoizedImgPreview
+            youtubeVideos={youtubeVideos}
+            onDeleteYoutubeVideo={onDeleteYoutubeVideo}
+          />
         </div>
       )}
     </>
